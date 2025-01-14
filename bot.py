@@ -1,7 +1,7 @@
 import asyncio
 from aiogram import Bot, Dispatcher
 from config import TOKEN
-from handlers import setup_handlers
+from handlers.handlers import setup_handlers
 # from middlewares import LoggingMiddleware
 
 # Создаем экземпляры бота и диспетчера
