@@ -9,6 +9,7 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY")
 
 OPENWEATHER_API_URL = 'https://api.openweathermap.org/data/2.5/weather'
+OPENWEATHER_GEO_API_URL = 'http://api.openweathermap.org/geo/1.0/direct'
 
 if not BOT_TOKEN:
     raise ValueError("Переменная окружения BOT_TOKEN не установлена!")
