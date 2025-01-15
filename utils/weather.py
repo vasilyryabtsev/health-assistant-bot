@@ -23,9 +23,9 @@ async def get_lat_lon(city):
                     data = await response.json()
                     return data[0]['lat'], data[0]['lon']
         except aiohttp.ClientError as e:
-            print(f"Ошибка клиента OpenWeatherAPI: {e}")
+            print(f'Ошибка клиента OpenWeatherAPI: {e}')
         except asyncio.TimeoutError:
-            print("Ошибка: Таймаут при запросе к OpenWeatherAPI")
+            print('Ошибка: Таймаут при запросе к OpenWeatherAPI')
 
 async def get_weather(latitude, longitude):
     """
@@ -47,9 +47,9 @@ async def get_weather(latitude, longitude):
                     main = data.get('main', {})
                     return main.get('temp')
         except aiohttp.ClientError as e:
-            print(f"Ошибка клиента OpenWeatherAPI: {e}")
+            print(f'Ошибка клиента OpenWeatherAPI: {e}')
         except asyncio.TimeoutError:
-            print("Ошибка: Таймаут при запросе к OpenWeatherAPI")
+            print('Ошибка: Таймаут при запросе к OpenWeatherAPI')
         
 async def get_weather_by_city(city):
     """
