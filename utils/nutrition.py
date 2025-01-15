@@ -28,3 +28,36 @@ async def get_calories(ingredient):
             print(f'Ошибка клиента EdamamAPI: {e}')
         except asyncio.TimeoutError:
             print('Ошибка: Таймаут при запросе к EdamamAPI')
+
+def calculate_activity_coeff(activety_time):
+    """
+    Расчет коэффициента активности.
+    """
+    if activety_time > 12 * 60:
+        return 1.9
+    elif activety_time > 9 * 60:
+        return 1.725
+    elif activety_time > 6 * 60:
+        return 1.55
+    elif activety_time > 3 * 60:
+        return 1.375
+    else:
+        return 1.2
+
+def calculate_calories_norm(sex, weight, height, age, activety_time):
+    """
+    Расчет нормы калорий по формуле Харриса-Бенедикта.
+    
+    Параметры:
+    weight - кг;
+    height - см;
+    age - полных лет;
+    activity_time - время активности в неделю (минуты).
+    """
+    a = calculate_activity_coeff(activety_time)
+    
+    if sex == 'male':
+        return a * (88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age))
+    else:
+        return a * (447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age))
+    
