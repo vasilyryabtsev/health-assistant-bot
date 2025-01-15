@@ -24,7 +24,7 @@ async def get_calories(ingredient):
             async with session.get(EDAMAM_URL, params=params, timeout=10) as response:
                 if response.status == 200:
                     data = await response.json()
-                    return data.get('calories')
+                    return round(data.get('calories'))
         except aiohttp.ClientError as e:
             print(f'Ошибка клиента EdamamAPI: {e}')
         except asyncio.TimeoutError:
@@ -61,9 +61,9 @@ def calculate_calories_norm(sex, weight, height, age, activety_time):
     a = calculate_activity_coeff(activety_time)
     
     if sex == 'male':
-        return a * (88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age))
+        return round(a * (88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age)))
     else:
-        return a * (447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age))
+        return round(a * (447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age)))
 
 async def calculate_water_norm(weight, activity_time, city):
     """
@@ -80,4 +80,4 @@ async def calculate_water_norm(weight, activity_time, city):
     if temperature >= 25:
         temperature_coeff = temperature / 25
     
-    return weight * 30 + 500 * (activity_time / 30) + 500 * temperature_coeff
+    return round(weight * 30 + 500 * (activity_time / 30) + 500 * temperature_coeff)
