@@ -1,27 +1,30 @@
-def get_water_progress(goal, score):
+def get_water_progress(goal, logged):
     """
     Функция для получения прогресса по воде.
     """
     res = f'''
     Water:
-    - Goal: {score} ml out of {goal}\n
+    - Goal: {logged} ml out of {goal}\n
     '''
-    if score >= goal:
+    if logged >= goal:
         res += 'You have reached your goal! Congratulations!🥳\n'
     else:
-        res += f'You have {goal - score} ml left to reach your goal!\n'
+        res += f'You have {goal - logged} ml left to reach your goal!💧\n'
     return res
         
-def get_calories_progress(goal, score):
+def get_calories_progress(goal, logged, burned):
     """
     Функция для получения прогресса по калориям.
     """
+    balance = logged - burned
     res = f'''
     Calories:
-    - Goal: {score} out of {goal}\n
+    - Goal: {logged} out of {goal}
+    - Burned: {burned}
+    - Balance: {balance}\n
     '''
-    if score >= goal:
-        res += 'You have reach your daily calorie goal.🍎\n'
+    if balance < goal:
+        res += f'Your daily calorie intake is normal.🍎\n'
     else:
-        res += f'We are {goal - score} kcal away from reaching our calorie goal.\n'
+        res += f'Your daily calorie intake is exceeded. Time to go for a run!🏃\n'
     return res
