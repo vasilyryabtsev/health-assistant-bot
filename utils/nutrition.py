@@ -32,14 +32,17 @@ async def get_calories(ingredient):
 def calculate_activity_coeff(activety_time):
     """
     Расчет коэффициента активности.
+    
+    Параметры:
+    activety_time - время активности в неделю (часы).
     """
-    if activety_time > 12 * 60:
+    if activety_time > 12:
         return 1.9
-    elif activety_time > 9 * 60:
+    elif activety_time > 9:
         return 1.725
-    elif activety_time > 6 * 60:
+    elif activety_time > 6:
         return 1.55
-    elif activety_time > 3 * 60:
+    elif activety_time > 3:
         return 1.375
     else:
         return 1.2
@@ -52,7 +55,7 @@ def calculate_calories_norm(sex, weight, height, age, activety_time):
     weight - кг;
     height - см;
     age - полных лет;
-    activity_time - время активности в неделю (минуты).
+    activity_time - время активности в неделю (часы).
     """
     a = calculate_activity_coeff(activety_time)
     
