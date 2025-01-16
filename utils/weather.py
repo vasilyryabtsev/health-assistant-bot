@@ -21,7 +21,10 @@ async def get_lat_lon(city):
             async with session.get(OPENWEATHER_GEO_API_URL, params=params, timeout=10) as response:
                 if response.status == 200:
                     data = await response.json()
-                    return data[0]['lat'], data[0]['lon']
+                    if len(data) > 0:
+                        return data[0]['lat'], data[0]['lon']
+                    else:
+                        return None, None
         except aiohttp.ClientError as e:
             print(f'Ошибка клиента OpenWeatherAPI: {e}')
         except asyncio.TimeoutError:
