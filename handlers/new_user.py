@@ -92,7 +92,3 @@ async def process_city(message: Message, city: str, state: FSMContext):
     await state.update_data(city=city)
     await message.reply('Your profile is set!')
     await state.clear()
-    
-# Функция для подключения обработчиков
-def setup_handlers(dp):
-    dp.include_router(router)
