@@ -11,12 +11,16 @@ router = Router()
 # Обработчик команды /start
 @router.message(Command('start'))
 async def cmd_start(message: Message):
-    await message.reply('''Welcome! I am your personal assistant for a healthy lifestyle!
+    await message.reply(f'''Welcome, {message.from_user.first_name}! 
+
+I am your personal assistant for a healthy lifestyle!
+
 Enter /help to find out my capabilities.''')
     
 @router.message(Command('help'))
 async def cmd_help(message: Message):
     await message.reply('''I can help you with the following commands:
+
 /start - start the bot
 /help - get help
 /set_profile - set your profile''')
