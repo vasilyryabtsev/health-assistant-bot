@@ -1,12 +1,14 @@
 import asyncio
 from aiogram import Bot, Dispatcher
 from config import BOT_TOKEN
-from handlers.new_user_router import setup_handlers
+from handlers.new_user import router as new_user_router
+from handlers.user import router as user_router
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
-setup_handlers(dp)
+dp.include_router(new_user_router)
+dp.include_router(user_router)
 
 async def main():
     print("Бот запущен!")
