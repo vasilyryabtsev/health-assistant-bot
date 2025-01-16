@@ -2,7 +2,7 @@ import sys
 import os
 import asyncio
 import aiohttp
-from weather import get_weather_by_city
+from utils.weather import get_weather_by_city
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -48,7 +48,7 @@ def calculate_activity_coeff(activety_time):
     else:
         return 1.2
 
-def calculate_calories_norm(sex, weight, height, age, activety_time):
+def calculate_calories_norm(gender, weight, height, age, activety_time):
     """
     Расчет нормы калорий в день по формуле Харриса-Бенедикта (ккал).
     
@@ -60,7 +60,7 @@ def calculate_calories_norm(sex, weight, height, age, activety_time):
     """
     a = calculate_activity_coeff(activety_time)
     
-    if sex == 'male':
+    if gender == 'Male':
         return round(a * (88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age)))
     else:
         return round(a * (447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age)))
