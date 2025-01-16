@@ -1,7 +1,7 @@
 import asyncio
 from aiogram import Bot, Dispatcher
 from config import BOT_TOKEN
-from handlers.handlers import setup_handlers
+from handlers.user_router import setup_handlers
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
