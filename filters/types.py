@@ -31,3 +31,21 @@ class CityNameFilter(BaseFilter):
         else:
             await message.reply("City not found")
             return False
+        
+class InUsersFilter(BaseFilter):
+    async def __call__(self, message: Message, users: Dict[int, Dict]) -> bool:
+        user_id = message.from_user.id
+        if user_id in users:
+            return True
+        else:
+            await message.reply('You need to set yout profile first. Enter /set_profile')
+            return False
+        
+class IsNotProfileFilter(BaseFilter):
+    async def __call__(self, message: Message, users: Dict[int, Dict]) -> bool:
+        user_id = message.from_user.id
+        if user_id in users:
+            await message.reply('You have already set your profile. To show it, enter /my_profile')
+            return False
+        else:
+            return True

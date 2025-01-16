@@ -5,7 +5,7 @@ class UserProfile(StatesGroup):
     weight = State()
     height = State()
     age = State()
-    activety_time = State()
+    activity_time = State()
     calories_goal_ind = State()
     calories_goal = State()
     city = State()

@@ -30,25 +30,25 @@ async def get_calories(ingredient):
         except asyncio.TimeoutError:
             print('Ошибка: Таймаут при запросе к EdamamAPI')
 
-def calculate_activity_coeff(activety_time):
+def calculate_activity_coeff(activity_time):
     """
     Расчет коэффициента активности.
     
     Параметры:
     activety_time - время активности в неделю (часы).
     """
-    if activety_time > 12:
+    if activity_time > 12:
         return 1.9
-    elif activety_time > 9:
+    elif activity_time > 9:
         return 1.725
-    elif activety_time > 6:
+    elif activity_time > 6:
         return 1.55
-    elif activety_time > 3:
+    elif activity_time > 3:
         return 1.375
     else:
         return 1.2
 
-def calculate_calories_norm(gender, weight, height, age, activety_time):
+def calculate_calories_norm(gender, weight, height, age, activity_time):
     """
     Расчет нормы калорий в день по формуле Харриса-Бенедикта (ккал).
     
@@ -58,7 +58,7 @@ def calculate_calories_norm(gender, weight, height, age, activety_time):
     age - полных лет;
     activity_time - время активности в неделю (часы).
     """
-    a = calculate_activity_coeff(activety_time)
+    a = calculate_activity_coeff(activity_time)
     
     if gender == 'Male':
         return round(a * (88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age)))

@@ -5,7 +5,8 @@ from aiogram.fsm.context import FSMContext
 from states.registration import UserProfile
 from keyboards.user_keyboards import simple_kb, gender_kb
 from utils.nutrition import calculate_calories_norm
-from filters.types import IsNumericFilter, InListFilter, CityNameFilter
+from filters.types import IsNumericFilter, InListFilter, CityNameFilter, IsNotProfileFilter
+from typing import Dict
 
 router = Router()
 
@@ -28,7 +29,7 @@ async def cmd_help(message: Message):
 /my_profile - show my profile''')
     
 # FSM
-@router.message(Command('set_profile'))
+@router.message(Command('set_profile'), IsNotProfileFilter())
 async def cmd_set_profile(message: Message, state: FSMContext):
     await message.reply('Choose your gender', reply_markup=gender_kb())
     await state.set_state(UserProfile.gender)
@@ -55,11 +56,11 @@ async def process_height(message: Message, number: int, state: FSMContext):
 async def process_age(message: Message, number: int, state: FSMContext):
     await state.update_data(age=number)
     await message.reply('Enter the average activity time per day for the week (minutes):')
-    await state.set_state(UserProfile.activety_time)
+    await state.set_state(UserProfile.activity_time)
     
-@router.message(UserProfile.activety_time, IsNumericFilter())
-async def process_activety_time(message: Message, number: int, state: FSMContext):
-    await state.update_data(activety_time=number)
+@router.message(UserProfile.activity_time, IsNumericFilter())
+async def process_activity_time(message: Message, number: int, state: FSMContext):
+    await state.update_data(activity_time=number)
     await message.reply('Do you want to set your own calorie goal?', reply_markup=simple_kb())
     await state.set_state(UserProfile.calories_goal_ind)
     
@@ -76,7 +77,7 @@ async def process_calories_goal_ind(message: Message, state: FSMContext):
             weight=int(data['weight']),
             height=int(data['height']),
             age=int(data['age']),
-            activety_time=int(data['activety_time'])
+            activity_time=int(data['activity_time'])
         )
         await state.update_data(calories_goal=norm)
         await message.reply('Enter your city:', reply_markup=ReplyKeyboardRemove())
@@ -89,7 +90,10 @@ async def process_calories_goal(message: Message, state: FSMContext):
     await state.set_state(UserProfile.city)
 
 @router.message(UserProfile.city, CityNameFilter())
-async def process_city(message: Message, city: str, state: FSMContext):
+async def process_city(message: Message, city: str, users: Dict[int, Dict], state: FSMContext):
     await state.update_data(city=city)
-    await message.reply('Your profile is set!')
+    data = await state.get_data()
+    data.pop('calories_goal_ind')
+    users[message.from_user.id] = data
+    await message.reply('Your profile is set! Enter /my_profile to view it.')
     await state.clear()
