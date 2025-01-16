@@ -24,7 +24,8 @@ async def cmd_help(message: Message):
 
 /start - start the bot
 /help - get help
-/set_profile - set your profile''')
+/set_profile - set your profile
+/my_profile - show my profile''')
     
 # FSM
 @router.message(Command('set_profile'))
