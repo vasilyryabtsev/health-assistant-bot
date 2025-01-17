@@ -1,5 +1,6 @@
 from aiogram.filters import BaseFilter
 from aiogram.types import Message
+from aiogram.filters.command import CommandObject
 from typing import Dict
 from utils.weather import get_lat_lon
     
@@ -49,3 +50,24 @@ class IsNotProfileFilter(BaseFilter):
             return False
         else:
             return True
+
+class IsFloatArgFilter(BaseFilter):
+    async def __call__(self, message: Message, command: CommandObject, users: Dict[int, Dict]) -> Dict[str, float] | bool:
+        try:
+            args = command.args.split()
+            if len(args) > 1:
+                await message.reply('Please enter only one number')
+                return False
+            volume = float(args[0])
+            return {'volume': volume}
+        except Exception:
+            await message.reply('Please enter a number')
+            return False
+        
+class StrArgFilter(BaseFilter):
+    async def __call__(self, message: Message, command: CommandObject) -> str | bool:
+        if command.args is not None:
+            return {'args': command.args}
+        else:
+            await message.reply('Please enter arguments after the command')
+            return False

@@ -95,5 +95,7 @@ async def process_city(message: Message, city: str, users: Dict[int, Dict], stat
     data = await state.get_data()
     data.pop('calories_goal_ind')
     users[message.from_user.id] = data
+    users[message.from_user.id]['city'] = city
+    
     await message.reply('Your profile is set! Enter /my_profile to view it.')
     await state.clear()
