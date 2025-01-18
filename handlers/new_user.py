@@ -4,10 +4,10 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from states.registration import UserProfile
 from keyboards.user_keyboards import simple_kb, gender_kb
-from utils.nutrition import calculate_calories_norm
+from utils.nutrition import calculate_calories_norm, calculate_water_norm
 from filters.types import IsNumericFilter, InListFilter, CityNameFilter, IsNotProfileFilter
 from typing import Dict
-
+from datetime import datetime
 router = Router()
 
 # Обработчик команды /start
@@ -26,7 +26,13 @@ async def cmd_help(message: Message):
 /start - start the bot
 /help - get help
 /set_profile - set your profile
-/my_profile - show my profile''')
+/my_profile - show my profile
+/remove_profile - remove your profile
+/check_progress - check your progress
+/log_water - log your water intake
+/log_food - log your food intake
+/log_workout - log your workout
+''')
     
 # FSM
 @router.message(Command('set_profile'), IsNotProfileFilter())
@@ -94,8 +100,16 @@ async def process_city(message: Message, city: str, users: Dict[int, Dict], stat
     await state.update_data(city=city)
     data = await state.get_data()
     data.pop('calories_goal_ind')
+    
     users[message.from_user.id] = data
+    user = users[message.from_user.id]
+    
     users[message.from_user.id]['city'] = city
+    
+    water_norm = (datetime.now(), await calculate_water_norm(user['weight'],
+                                                                user['activity_time'],
+                                                                user['city']))
+    user['water_norm'] = [water_norm]
     
     await message.reply('Your profile is set! Enter /my_profile to view it.')
     await state.clear()

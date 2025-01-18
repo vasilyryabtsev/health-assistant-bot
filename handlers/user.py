@@ -53,8 +53,8 @@ async def cmd_log_water(message: Message, volume: float, users: Dict[str, Dict])
     
     water_goal_today, water_balance_today = calculate_water_data(user)
     left_to_goal = water_goal_today - water_balance_today
-    await message.reply(f'''💧 You just had drunk {volume} ml of {water_goal_today} ml daily goal''')
-    await message.answer(f'''💧 {left_to_goal} ml left to reach your goal''')
+    await message.reply(f'''💧 You just had drunk {volume} ml. Today water goal is {water_goal_today} ml''')
+    await message.answer(f'''💧 {max(0, left_to_goal)} ml left to reach your goal''')
 
 @router.message(Command('log_food'), StrArgFilter())
 async def cmd_log_food(message: Message, args: str, users: Dict[str, Dict]):
