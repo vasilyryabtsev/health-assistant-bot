@@ -35,7 +35,7 @@ def calculate_activity_coeff(activity_time):
     Расчет коэффициента активности.
     
     Параметры:
-    activety_time - время активности в неделю (часы).
+    activity_time - время активности в неделю (часы).
     """
     if activity_time > 12:
         return 1.9
