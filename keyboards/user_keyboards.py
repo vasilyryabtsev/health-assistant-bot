@@ -1,6 +1,9 @@
 from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 
 def simple_kb():
+    """
+    Клавиатура для короткого ответа: Yes или No.
+    """
     kb_list = [[KeyboardButton(text="Yes"), KeyboardButton(text="No")]]
     return ReplyKeyboardMarkup(
         keyboard=kb_list,
@@ -10,6 +13,9 @@ def simple_kb():
     )
     
 def gender_kb():
+    """
+    Клавиатура для выбра пола: Male или Female.
+    """
     kb_list = [[KeyboardButton(text='Male'), KeyboardButton(text='Female')]]
     return ReplyKeyboardMarkup(
         keyboard=kb_list,
