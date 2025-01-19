@@ -5,7 +5,7 @@ from aiogram.fsm.context import FSMContext
 from states.registration import UserProfile
 from keyboards.user_keyboards import simple_kb, gender_kb
 from utils.nutrition import calculate_calories_norm, calculate_water_norm
-from filters.types import IsNumericFilter, InListFilter, CityNameFilter, IsNotProfileFilter
+from filters.types import IsNumericFilter, InListFilter, CityNameFilter
 from typing import Dict
 from datetime import datetime
 
@@ -38,10 +38,13 @@ I can help you with the following commands:
 ''')
     
 # FSM
-@router.message(Command('set_profile'), IsNotProfileFilter())
-async def cmd_set_profile(message: Message, state: FSMContext):
-    await message.reply('Choose your gender', reply_markup=gender_kb())
-    await state.set_state(UserProfile.gender)
+@router.message(Command('set_profile'))
+async def cmd_set_profile(message: Message, users: Dict[str, Dict], state: FSMContext):
+    if message.from_user.id in users:
+        await message.reply('You already have a profile. Enter /my_profile to view it.')
+    else:
+        await message.reply('Choose your gender', reply_markup=gender_kb())
+        await state.set_state(UserProfile.gender)
 
 @router.message(UserProfile.gender, InListFilter(['Male', 'Female']))
 async def process_gender(message: Message, state: FSMContext):
@@ -94,7 +97,7 @@ async def process_calories_goal_ind(message: Message, state: FSMContext):
 
 @router.message(UserProfile.calories_goal, IsNumericFilter())
 async def process_calories_goal(message: Message, state: FSMContext):
-    await state.update_data(calories_goal=message.text)
+    await state.update_data(calories_goal=float(message.text))
     await message.reply('Enter your city:')
     await state.set_state(UserProfile.city)
 

@@ -46,7 +46,7 @@ class InUsersFilter(BaseFilter):
     """
     Фильтр для проверки наличия пользователя в базе данных.
     """
-    async def __call__(self, message: Message, users: Dict[int, Dict]) -> bool:
+    async def __call__(self, message: Message, users: Dict[str, Dict]) -> bool:
         user_id = message.from_user.id
         if user_id in users:
             return True
@@ -58,7 +58,7 @@ class IsNotProfileFilter(BaseFilter):
     """
     Проверяет есть ли у пользователя профиль.
     """
-    async def __call__(self, message: Message, users: Dict[int, Dict]) -> bool:
+    async def __call__(self, message: Message, users: Dict[str, Dict]) -> bool:
         user_id = message.from_user.id
         if user_id in users:
             await message.reply('You have already set your profile. To show it, enter /my_profile')
@@ -70,7 +70,7 @@ class IsNumberArgFilter(BaseFilter):
     """
     Проверяет является ли аргумент числом.
     """
-    async def __call__(self, message: Message, command: CommandObject, users: Dict[int, Dict]) -> Dict[str, float] | bool:
+    async def __call__(self, message: Message, command: CommandObject) -> Dict[str, float] | bool:
         try:
             args = command.args.split()
             if len(args) > 1:
