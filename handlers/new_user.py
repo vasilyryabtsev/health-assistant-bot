@@ -8,20 +8,23 @@ from utils.nutrition import calculate_calories_norm, calculate_water_norm
 from filters.types import IsNumericFilter, InListFilter, CityNameFilter, IsNotProfileFilter
 from typing import Dict
 from datetime import datetime
+
 router = Router()
 
-# Обработчик команды /start
 @router.message(Command('start'))
 async def cmd_start(message: Message):
-    await message.reply(f'''Welcome, {message.from_user.first_name}! 
+    await message.reply(f'''
+Welcome, {message.from_user.first_name}! 
 
 I am your personal assistant for a healthy lifestyle!
 
-Enter /help to find out my capabilities.''')
+Enter /help to find out my capabilities.
+''')
     
 @router.message(Command('help'))
 async def cmd_help(message: Message):
-    await message.reply('''I can help you with the following commands:
+    await message.reply('''
+I can help you with the following commands:
 
 /start - start the bot
 /help - get help
@@ -29,9 +32,9 @@ async def cmd_help(message: Message):
 /my_profile - show my profile
 /remove_profile - remove your profile
 /check_progress - check your progress
-/log_water - log your water intake
-/log_food - log your food intake
-/log_workout - log your workout
+/log_water <info> - log your water intake
+/log_food <info> - log your food intake
+/log_workout <info> - log your workout
 ''')
     
 # FSM
