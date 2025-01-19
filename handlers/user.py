@@ -1,8 +1,7 @@
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
-from aiogram.filters.command import CommandObject
-from filters.types import InUsersFilter, IsFloatArgFilter, StrArgFilter
+from filters.types import InUsersFilter, IsNumberArgFilter, ArgFilter
 from typing import Dict
 from datetime import datetime
 from utils.nutrition import calculate_water_norm, get_calories
@@ -32,9 +31,11 @@ async def cmd_my_profile(message: Message, users: Dict[str, Dict]):
 @router.message(Command('remove_profile'))
 async def cmd_remove_profile(message: Message, users: Dict[str, Dict]):
     users.pop(message.from_user.id)
-    await message.reply('Your profile has been removed. To create new profile, enter /set_profile.')
+    await message.reply('''
+Your profile has been removed. To create new profile, enter /set_profile.
+''')
     
-@router.message(Command('log_water'), IsFloatArgFilter())
+@router.message(Command('log_water'), IsNumberArgFilter())
 async def cmd_log_water(message: Message, volume: float, users: Dict[str, Dict]):
     user = users[message.from_user.id]
     water_norm = (datetime.now(), await calculate_water_norm(user['weight'],
@@ -54,9 +55,9 @@ async def cmd_log_water(message: Message, volume: float, users: Dict[str, Dict])
     water_goal_today, water_balance_today = calculate_water_data(user)
     left_to_goal = water_goal_today - water_balance_today
     await message.reply(f'''💧 You just had drunk {volume} ml. Today water goal is {water_goal_today} ml''')
-    await message.answer(f'''💧 {max(0, left_to_goal)} ml left to reach your goal''')
+    await message.answer(f'''{max(0, left_to_goal)} ml left to reach your goal''')
 
-@router.message(Command('log_food'), StrArgFilter())
+@router.message(Command('log_food'), ArgFilter())
 async def cmd_log_food(message: Message, args: str, users: Dict[str, Dict]):
     user = users[message.from_user.id]
     calories = await get_calories(args)
@@ -70,7 +71,7 @@ async def cmd_log_food(message: Message, args: str, users: Dict[str, Dict]):
     else:
         await message.reply(f'{args} not found.')
         
-@router.message(Command('log_workout'), StrArgFilter())
+@router.message(Command('log_workout'), ArgFilter())
 async def cmd_log_workout(message: Message, args: str, users: Dict[str, Dict]):
     user = users[message.from_user.id]
     name, time, calories = await get_burned_calories(args,
