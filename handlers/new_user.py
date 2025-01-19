@@ -32,9 +32,9 @@ I can help you with the following commands:
 /my_profile - show my profile
 /remove_profile - remove your profile
 /check_progress - check your progress
-/log_water <info> - log your water intake
-/log_food <info> - log your food intake
-/log_workout <info> - log your workout
+/log_water <volume> - log your water intake (ml)
+/log_food <product name> [<dish weight>] - log your food intake 
+/log_workout <training type> [<time (min)>] - log your workout
 ''')
     
 # FSM
