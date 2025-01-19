@@ -5,6 +5,9 @@ from typing import Dict
 from utils.weather import get_lat_lon
     
 class IsNumericFilter(BaseFilter):
+    """
+    Проверяет является ли сообщение числом.
+    """
     async def __call__(self, message: Message) -> Dict[str, int] | bool:
         try:
             return {'number': int(message.text)}
@@ -13,6 +16,9 @@ class IsNumericFilter(BaseFilter):
             return False
         
 class InListFilter(BaseFilter):
+    """
+    Проверяет находится ли сообщение в списке.
+    """
     def __init__(self, list: list):
         self.list = list
         
@@ -24,6 +30,9 @@ class InListFilter(BaseFilter):
             return False
         
 class CityNameFilter(BaseFilter):
+    """
+    Фильтр для проверки существования города.
+    """
     async def __call__(self, message: Message) -> Dict[str, str] | bool:
         city = message.text.capitalize()
         lat, _ = await get_lat_lon(city)
@@ -34,6 +43,9 @@ class CityNameFilter(BaseFilter):
             return False
         
 class InUsersFilter(BaseFilter):
+    """
+    Фильтр для проверки наличия пользователя в базе данных.
+    """
     async def __call__(self, message: Message, users: Dict[int, Dict]) -> bool:
         user_id = message.from_user.id
         if user_id in users:
@@ -43,6 +55,9 @@ class InUsersFilter(BaseFilter):
             return False
         
 class IsNotProfileFilter(BaseFilter):
+    """
+    Проверяет есть ли у пользователя профиль.
+    """
     async def __call__(self, message: Message, users: Dict[int, Dict]) -> bool:
         user_id = message.from_user.id
         if user_id in users:
@@ -51,7 +66,10 @@ class IsNotProfileFilter(BaseFilter):
         else:
             return True
 
-class IsFloatArgFilter(BaseFilter):
+class IsNumberArgFilter(BaseFilter):
+    """
+    Проверяет является ли аргумент числом.
+    """
     async def __call__(self, message: Message, command: CommandObject, users: Dict[int, Dict]) -> Dict[str, float] | bool:
         try:
             args = command.args.split()
@@ -64,7 +82,10 @@ class IsFloatArgFilter(BaseFilter):
             await message.reply('Please enter a number')
             return False
         
-class StrArgFilter(BaseFilter):
+class ArgFilter(BaseFilter):
+    """
+    Проверяет наличие аргументов после команды.
+    """
     async def __call__(self, message: Message, command: CommandObject) -> str | bool:
         if command.args is not None:
             return {'args': command.args}
