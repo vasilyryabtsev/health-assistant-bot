@@ -35,7 +35,7 @@
 После запуска бота, вы можете отправить команду `/start` в Telegram, чтобы начать взаимодействие с ботом.
 
 ## Деплой
-[render.com]](https://render.com/)
+[render.com](https://render.com/)
 ![0.jpg](docs/0.jpg)
 ## Демонстрация работы бота:
 
